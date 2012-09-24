@@ -43,7 +43,7 @@ $( function() {
 
         //Creating the DataManagers:
         var dm = aerogear.dataManager([ "tasks", "tags", "projects", "filtered" ]),
-        FilteredStore = dm.valves[ "filtered" ],
+        FilteredStore = dm.stores[ "filtered" ],
         TasksStore = dm.stores[ "tasks" ],
         ProjectsStore = dm.stores[ "projects" ],
         TagsStore = dm.stores[ "tags" ];
@@ -406,7 +406,7 @@ $( function() {
     });
 
     //Filter Buttons
-    $( ".todo-app" ).on( "click", " .btn.sort ", function( event ) {
+    $( ".todo-app" ).on( "click", ".btn.sort", function( event ) {
         var target = $( event.target ).closest( ".option-overlay" ),
         filteredData;
 
@@ -418,10 +418,15 @@ $( function() {
                 //filteredData = TasksValve.filter( { "tags" : { data : [ target.data( "id" ) ] } } );
                 break;
         }
-        
+
         FilteredValve.save( filteredData, true );
         updateTaskList( FilteredValve.data );
 
+    });
+
+    $( ".todo-app" ).on( "click", "#clearFilter", function( event ) {
+        updateTaskList();
+        $("#clearFilter").hide();
     });
 
     // Show all tags and projects on touch devices
@@ -536,7 +541,12 @@ $( function() {
 
 
     function updateTaskList( filtered ) {
+
         var taskList = _.template( $( "#task-tmpl" ).html(), { tasks: filtered || TasksStore.data, tags: TagsStore.data, projects: ProjectsStore.data } );
+
+        if(filtered){
+            $("#clearFilter").show();
+        }
 
 
         $( "#task-list-container" ).html( taskList );
