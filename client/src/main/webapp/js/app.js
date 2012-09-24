@@ -404,6 +404,20 @@ $( function() {
         }
     });
 
+    //Filter Buttons
+    $( ".todo-app" ).on( "click", " .btn.sort ", function( event ) {
+        var target = $( event.target ).closest( ".option-overlay" );
+
+        switch( target.data( "type" ) ) {
+            case "project":
+                break;
+            case "tag":
+                break;
+
+        }
+
+    });
+
     // Show all tags and projects on touch devices
     if ( Modernizr.touch ) {
         $( "#project-list, #tag-list" ).css( "max-height", "none" );
