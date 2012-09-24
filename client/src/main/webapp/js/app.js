@@ -415,7 +415,7 @@ $( function() {
                 filteredData = TasksValve.filter( {  "project" : target.data( "id" ) } );
                 break;
             case "tag":
-                //filteredData = TasksValve.filter( { "tags" : { data : [ target.data( "id" ) ] } } );
+                filteredData = TasksValve.filter( { "tag" : { data : [ target.data( "id" ) ] } } );
                 break;
         }
 
@@ -546,6 +546,9 @@ $( function() {
 
         if(filtered){
             $("#clearFilter").show();
+        }
+        else{
+            $("#clearFilter").hide();
         }
 
 
