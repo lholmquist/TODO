@@ -42,7 +42,8 @@ $( function() {
         tagContainer = $( "#tag-list" );
 
         //Creating the DataManagers:
-        var dm = AeroGear.DataManager([ "tasks", "tags", "projects"]),
+        var dm = aerogear.dataManager([ "tasks", "tags", "projects", "filtered" ]),
+        FilteredStore = dm.valves[ "filtered" ],
         TasksStore = dm.stores[ "tasks" ],
         ProjectsStore = dm.stores[ "projects" ],
         TagsStore = dm.stores[ "tags" ];
@@ -406,15 +407,20 @@ $( function() {
 
     //Filter Buttons
     $( ".todo-app" ).on( "click", " .btn.sort ", function( event ) {
-        var target = $( event.target ).closest( ".option-overlay" );
+        var target = $( event.target ).closest( ".option-overlay" ),
+        filteredData;
 
-        switch( target.data( "type" ) ) {
+        switch( target.data( "type" ) ){
             case "project":
+                filteredData = TasksValve.filter( {  "project" : target.data( "id" ) } );
                 break;
             case "tag":
+                //filteredData = TasksValve.filter( { "tags" : { data : [ target.data( "id" ) ] } } );
                 break;
-
         }
+        
+        FilteredValve.save( filteredData, true );
+        updateTaskList( FilteredValve.data );
 
     });
 
@@ -510,7 +516,8 @@ $( function() {
         });
 
         // When both the available projects and available tags have returned, get the task data
-        $.when( projectGet, tagGet, Tasks.read( { stores: TasksStore } ) ).done( function( g1, g2, g3 ) {
+        $.when( projectGet, tagGet, Tasks.read( { stores: [ TasksStore, FilteredValve ] } ) ).done( function( g1, g2, g3 ) {
+
             $( "#userinfo-name" ).text( sessionStorage.getItem( "username" ) );
             $( "#userinfo-msg" ).show();
         })
@@ -527,8 +534,10 @@ $( function() {
         });
     }
 
-    function updateTaskList() {
-        var taskList = _.template( $( "#task-tmpl" ).html(), { tasks: TasksStore.getData(), tags: TagsStore.getData(), projects: ProjectsStore.getData() } );
+
+    function updateTaskList( filtered ) {
+        var taskList = _.template( $( "#task-tmpl" ).html(), { tasks: filtered || TasksStore.data, tags: TagsStore.data, projects: ProjectsStore.data } );
+
 
         $( "#task-list-container" ).html( taskList );
 
