@@ -415,7 +415,7 @@ $( function() {
                 filteredData = TasksValve.filter( {  "project" : target.data( "id" ) } );
                 break;
             case "tag":
-                filteredData = TasksValve.filter( { "tag" : { data : [ target.data( "id" ) ] } } );
+                filteredData = TasksValve.filter( { "tags" : target.data( "id" ) } );
                 break;
         }
 
