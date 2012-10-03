@@ -939,6 +939,7 @@ AeroGear.Core = function() {
                                 paramResult = false;
                             }
                         } else {
+<<<<<<< HEAD
                             if ( filterObj.matchAny && filterObj.data[ j ] === value[ keys[ i ] ] ) {
                                 // At least one value must match and this one does so return true
                                 paramResult = true;

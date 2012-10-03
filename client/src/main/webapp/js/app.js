@@ -200,7 +200,7 @@ $( function() {
                                 $( "#auth-error-box" ).modal();
                             }
                         },
-                        stores: TasksStore
+                        stores: [ TasksStore, FilteredStore ]
                     });
                     break;
                 case "login":
@@ -412,19 +412,20 @@ $( function() {
 
         switch( target.data( "type" ) ){
             case "project":
-                filteredData = TasksValve.filter( {  "project" : target.data( "id" ) } );
+                filteredData = FilteredStore.filter( { "project" : target.data( "id" ) } );
                 break;
             case "tag":
-                filteredData = TasksValve.filter( { "tags" : target.data( "id" ) } );
+                filteredData = FilteredStore.filter( { "tags" : target.data( "id" ) } );
                 break;
         }
 
-        FilteredValve.save( filteredData, true );
-        updateTaskList( FilteredValve.data );
+        FilteredStore.save( filteredData, true );
+        updateTaskList( FilteredStore.data );
 
     });
 
     $( ".todo-app" ).on( "click", "#clearFilter", function( event ) {
+        FilteredStore.save( TasksStore.data, true );
         updateTaskList();
         $("#clearFilter").hide();
     });
@@ -521,7 +522,7 @@ $( function() {
         });
 
         // When both the available projects and available tags have returned, get the task data
-        $.when( projectGet, tagGet, Tasks.read( { stores: [ TasksStore, FilteredValve ] } ) ).done( function( g1, g2, g3 ) {
+        $.when( projectGet, tagGet, Tasks.read( { stores: [ TasksStore, FilteredStore ] } ) ).done( function( g1, g2, g3 ) {
 
             $( "#userinfo-name" ).text( sessionStorage.getItem( "username" ) );
             $( "#userinfo-msg" ).show();
