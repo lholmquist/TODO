@@ -415,7 +415,7 @@ $( function() {
                 filteredData = FilteredStore.filter( { "project" : target.data( "id" ) } );
                 break;
             case "tag":
-                filteredData = FilteredStore.filter( { "tags" : target.data( "id" ) } );
+                filteredData = FilteredStore.filter( { "tags" : target.data( "id" ) }, { matchAny: true } );
                 break;
         }
 
