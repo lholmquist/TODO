@@ -42,8 +42,7 @@ $( function() {
         tagContainer = $( "#tag-list" );
 
         //Creating the DataManagers:
-        var dm = AeroGear.DataManager([ "tasks", "tags", "projects", "filtered" ]),
-        FilteredStore = dm.stores[ "filtered" ],
+        var dm = AeroGear.DataManager([ "tasks", "tags", "projects" ]),
         TasksStore = dm.stores[ "tasks" ],
         ProjectsStore = dm.stores[ "projects" ],
         TagsStore = dm.stores[ "tags" ];
@@ -200,7 +199,7 @@ $( function() {
                                 $( "#auth-error-box" ).modal();
                             }
                         },
-                        stores: [ TasksStore, FilteredStore ]
+                        stores: [ TasksStore ]
                     });
                     break;
                 case "login":
@@ -408,19 +407,36 @@ $( function() {
     //Filter Buttons
     $( ".todo-app" ).on( "click", ".btn.sort", function( event ) {
         var target = $( event.target ).closest( ".option-overlay" ),
-        filteredData;
+            targetParent = target.parent(),
+            filteredData,
+            filteredProjects,
+            filteredTags;
 
-        switch( target.data( "type" ) ){
-            case "project":
-                filteredData = FilteredStore.filter( { "project" : target.data( "id" ) } );
-                break;
-            case "tag":
-                filteredData = FilteredStore.filter( { "tags" : target.data( "id" ) }, { matchAny: true } );
-                break;
+        if ( targetParent.hasClass( "filtered" ) ) {
+            //Toggle Off
+            targetParent.removeClass( "filtered" );
+        } else {
+            //Toggle On
+            targetParent.addClass( "filtered" );
         }
 
-        FilteredStore.save( filteredData, true );
-        updateTaskList( FilteredStore.read() );
+        filteredProjects = $( ".project.filtered" );
+        filteredTags = $( ".tag.filtered" );
+
+        if( filteredProjects.length && filteredTags.length ) {
+            //Filter Both
+            //TODO - add in this functionality
+        } else if ( filteredProjects.length && filteredTags.length < 1 ) {
+            //Just Projects
+            filteredData = TasksStore.filter( { "project" : { data: getTargetIds( filteredProjects ), matchAny: true } } );
+        } else if ( filteredProjects.length < 1 && filteredTags.length ) {
+            //Just Tags
+            filteredData = TasksStore.filter( { "tags" : { data: getTargetIds( filteredTags ), matchAny: true } } );
+        } else {
+            //Nothing Selected. Restore the Original View
+        }
+
+        updateTaskList( filteredData );
 
     });
 
@@ -516,7 +532,7 @@ $( function() {
         });
 
         // When both the available projects and available tags have returned, get the task data
-        $.when( projectGet, tagGet, Tasks.read( { stores: [ TasksStore, FilteredStore ] } ) ).done( function( g1, g2, g3 ) {
+        $.when( projectGet, tagGet, Tasks.read( { stores: [ TasksStore ] } ) ).done( function( g1, g2, g3 ) {
 
             $( "#userinfo-name" ).text( sessionStorage.getItem( "username" ) );
             $( "#userinfo-msg" ).show();
@@ -654,6 +670,14 @@ $( function() {
             green: parseInt( triplets[ 1 ], 16 ),
             blue:  parseInt( triplets[ 2 ], 16 )
         };
+    }
+
+    function getTargetIds( values ) {
+        var valueList = [];
+        _.each( values, function( value ) {
+            valueList.push( $( value ).find( "div[data-id]" ).data( "id" ) );
+        });
+        return valueList;
     }
 
     function rgb2hex( r, g, b ) {

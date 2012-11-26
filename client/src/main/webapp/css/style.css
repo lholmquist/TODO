@@ -412,6 +412,10 @@ footer {
     background: #000;
 }
 
+.filtered {
+    border: 4px solid green;
+}
+
 /* Media Queries */
 @media (max-width: 1200px) {
 
