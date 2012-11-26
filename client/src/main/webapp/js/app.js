@@ -424,12 +424,6 @@ $( function() {
 
     });
 
-    $( ".todo-app" ).on( "click", "#clearFilter", function( event ) {
-        FilteredStore.save( TasksStore.read(), true );
-        updateTaskList();
-        $("#clearFilter").hide();
-    });
-
     // Show all tags and projects on touch devices
     if ( Modernizr.touch ) {
         $( "#project-list, #tag-list" ).css( "max-height", "none" );
@@ -544,14 +538,6 @@ $( function() {
     function updateTaskList( filtered ) {
 
         var taskList = _.template( $( "#task-tmpl" ).html(), { tasks: filtered || TasksStore.read(), tags: TagsStore.read(), projects: ProjectsStore.read() } );
-
-        if(filtered){
-            $("#clearFilter").show();
-        }
-        else{
-            $("#clearFilter").hide();
-        }
-
 
         $( "#task-list-container" ).html( taskList );
 
