@@ -425,7 +425,14 @@ $( function() {
 
         if( filteredProjects.length && filteredTags.length ) {
             //Filter Both
-            //TODO - add in this functionality
+            filteredData = TasksStore.filter({
+                "project" : {
+                    data: getTargetIds( filteredProjects ),
+                    matchAny: true },
+                 "tags" : {
+                    data: getTargetIds( filteredTags ),
+                    matchAny: true }
+            }, false);
         } else if ( filteredProjects.length && filteredTags.length < 1 ) {
             //Just Projects
             filteredData = TasksStore.filter( { "project" : { data: getTargetIds( filteredProjects ), matchAny: true } } );
