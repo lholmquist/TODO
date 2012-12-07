@@ -406,18 +406,20 @@ $( function() {
 
     //Filter Buttons
     $( ".todo-app" ).on( "click", ".btn.sort", function( event ) {
-        var target = $( event.target ).closest( ".option-overlay" ),
-            targetParent = target.parent(),
+        var target = $( event.target ).closest( ".sort" ),
+            targetType = $( target ).closest( ".option-overlay" ).parent(),
             filteredData,
             filteredProjects,
             filteredTags;
 
-        if ( targetParent.hasClass( "filtered" ) ) {
+        if ( targetType.hasClass( "filtered" ) ) {
             //Toggle Off
-            targetParent.removeClass( "filtered" );
+            targetType.removeClass( "filtered" );
+            target.removeClass( "btn-info" );
         } else {
             //Toggle On
-            targetParent.addClass( "filtered" );
+            targetType.addClass( "filtered" );
+            target.addClass( "btn-info" );
         }
 
         filteredProjects = $( ".project.filtered" );
