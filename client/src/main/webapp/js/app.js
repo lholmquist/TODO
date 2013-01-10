@@ -116,6 +116,11 @@ $( function() {
             data, hex, tags, errorElement, dateTest, today;
 
         form.find( "input" ).each( function() {
+            if ( $( this ).hasClass( "form-error" ) ) {
+                formValid = false;
+                errorElement = $( this );
+                return false;
+            }
             if ( !$.trim( $( this ).val() ).length && this.type != "hidden" && this.name != "date") {
                     formValid = false;
                     errorElement = $( this );
@@ -134,11 +139,15 @@ $( function() {
 
         // Handle invalid form
         if ( !formValid ) {
+            errorElement.addClass( "form-error" );
             if( errorElement[0].name == "date" ) {
-                errorElement.addClass( "form-error" ).val( "Enter a valid date in the future" );
+                errorElement.val( "Enter a valid date in the future" );
             } else {
-                errorElement.addClass( "form-error" ).val( "Field may not be empty" );
+                errorElement.val( "Field may not be empty" );
             }
+            errorElement.one( "focus", function() {
+                $( this ).removeClass( "form-error" ).val( "" );
+            });
         } else {
             data = form.serializeObject();
             if ( data.id && data.id.length ) {
@@ -265,11 +274,6 @@ $( function() {
                 hideForm( form.closest( "div" ) );
             }
         }
-    });
-
-    // Clear error fields
-    $( "form" ).on( "focus", ".form-error", function( event ) {
-        $( this ).removeClass( "form-error" ).val( "" );
     });
 
     // Item Hover Menus

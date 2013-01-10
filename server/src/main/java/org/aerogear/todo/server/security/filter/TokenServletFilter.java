@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter
+@WebFilter(filterName = "TokenServletFilter", urlPatterns = "/*")
 @ApplicationScoped
 public class TokenServletFilter implements Filter {
 
@@ -63,7 +63,7 @@ public class TokenServletFilter implements Filter {
         if (!tokenIsValid(token) && (path.contains(LOGOUT_PATH) || !path.contains(AUTH_PATH))) {
             httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         } else {
-            filterChain.doFilter(servletRequest, servletResponse);
+            filterChain.doFilter(new XSSServletRequestWrapper(httpServletRequest), servletResponse);
         }
 
 
