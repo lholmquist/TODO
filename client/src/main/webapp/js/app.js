@@ -276,11 +276,6 @@ $( function() {
         }
     });
 
-    // Clear error fields
-    $( "form" ).on( "focus", ".form-error", function( event ) {
-        $( this ).removeClass( "form-error" ).val( "" );
-    });
-
     // Item Hover Menus
     $( ".todo-app" )
         .on( "mouseenter", ".project, .tag, .task", function( event ) {
