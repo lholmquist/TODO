@@ -29,6 +29,8 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -62,7 +64,7 @@ public class TokenServletFilterTest {
     public void testIgnoreTokenValidationOnAuthPaths() throws Exception {
         when(servletRequest.getRequestURI()).thenReturn("/mysweetapp/auth/login");
         tokenServletFilter.doFilter(servletRequest, servletResponse, filterChain);
-        verify(filterChain).doFilter(servletRequest, servletResponse);
+        verify(filterChain).doFilter(any(XSSServletRequestWrapper.class), eq(servletResponse));
     }
 
     @Test
@@ -73,7 +75,7 @@ public class TokenServletFilterTest {
         when(servletRequest.getHeader(AUTH_TOKEN)).thenReturn(token);
         when(identity.restoreSession(token)).thenReturn(true);
         tokenServletFilter.doFilter(servletRequest, servletResponse, filterChain);
-        verify(filterChain).doFilter(servletRequest, servletResponse);
+        verify(filterChain).doFilter(any(XSSServletRequestWrapper.class), eq(servletResponse));
     }
 
     @Test
@@ -83,7 +85,7 @@ public class TokenServletFilterTest {
         when(servletRequest.getRequestURI()).thenReturn("/mysweetapp/auth/login");
         when(identity.restoreSession(token)).thenReturn(false);
         tokenServletFilter.doFilter(servletRequest, servletResponse, filterChain);
-        verify(filterChain).doFilter(servletRequest, servletResponse);
+        verify(filterChain).doFilter(any(XSSServletRequestWrapper.class), eq(servletResponse));
     }
 
     @Test
