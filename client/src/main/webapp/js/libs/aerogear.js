@@ -1,4 +1,4 @@
-/*! AeroGear JavaScript Library - v1.0.0.M2 - 2013-01-09
+/*! AeroGear JavaScript Library - v1.0.0-M2 - 2013-01-21
 * https://github.com/aerogear/aerogear-js
 * JBoss, Home of Professional Open Source
 * Copyright Red Hat, Inc., and individual contributors
@@ -611,30 +611,11 @@ AeroGear.isArray = function( obj ) {
         }
 
         success = function( data ) {
-            var stores = options.stores ? AeroGear.isArray( options.stores ) ? options.stores : [ options.stores ] : [],
-                item;
-
-            if ( stores.length ) {
-                for ( item in stores ) {
-                    stores[ item ].save( data, true );
-                }
-            }
-
             if ( options.success ) {
                 options.success.apply( this, arguments );
             }
         };
         error = function( type, errorMessage ) {
-            var stores = options.stores ? AeroGear.isArray( options.stores ) ? options.stores : [ options.stores ] : [],
-                item;
-
-            if ( type === "auth" && stores.length ) {
-                // If auth error, clear existing data for security
-                for ( item in stores ) {
-                    stores[ item ].remove();
-                }
-            }
-
             if ( options.error ) {
                 options.error.apply( this, arguments );
             }
@@ -668,7 +649,6 @@ AeroGear.isArray = function( obj ) {
         @param {Function} [options.error] - a callback to be called when the request to the server results in an error
         @param {Object} [options.statusCode] - a collection of status codes and callbacks to fire when the request to the server returns on of those codes. For more info see the statusCode option on the <a href="http://api.jquery.com/jQuery.ajax/">jQuery.ajax page</a>.
         @param {Function} [options.success] - a callback to be called when the result of the request to the server is successful
-        @param {Object|Array} [options.stores] - A single store object or array of stores to be updated when a server update is successful
         @returns {Object} A deferred implementing the promise interface similar to the jqXHR created by jQuery.ajax
         @example
         var myPipe = AeroGear.Pipeline( "tasks" ).pipes[ 0 ];
@@ -721,30 +701,11 @@ AeroGear.isArray = function( obj ) {
         }
 
         success = function( data ) {
-            var stores = AeroGear.isArray( options.stores ) ? options.stores : [ options.stores ],
-                item;
-
-            if ( options.stores ) {
-                for ( item in stores ) {
-                    stores[ item ].save( data );
-                }
-            }
-
             if ( options.success ) {
                 options.success.apply( this, arguments );
             }
         };
         error = function( type, errorMessage ) {
-            var stores = options.stores ? AeroGear.isArray( options.stores ) ? options.stores : [ options.stores ] : [],
-                item;
-
-            if ( type === "auth" && stores.length ) {
-                // If auth error, clear existing data for security
-                for ( item in stores ) {
-                    stores[ item ].remove();
-                }
-            }
-
             if ( options.error ) {
                 options.error.apply( this, arguments );
             }
@@ -770,7 +731,6 @@ AeroGear.isArray = function( obj ) {
         @param {Function} [options.error] - a callback to be called when the request to the server results in an error
         @param {Object} [options.statusCode] - a collection of status codes and callbacks to fire when the request to the server returns on of those codes. For more info see the statusCode option on the <a href="http://api.jquery.com/jQuery.ajax/">jQuery.ajax page</a>.
         @param {Function} [options.success] - a callback to be called when the result of the request to the server is successful
-        @param {Object|Array} [options.stores] - A single store object or array of stores to be updated when a server update is successful
         @returns {Object} A deferred implementing the promise interface similar to the jqXHR created by jQuery.ajax
         @example
         var myPipe = AeroGear.Pipeline( "tasks" ).pipes[ 0 ];
@@ -827,31 +787,11 @@ AeroGear.isArray = function( obj ) {
         url = ajaxSettings.url + delPath;
 
         success = function( data ) {
-            var stores,
-                item;
-
-            if ( options.stores ) {
-                stores = AeroGear.isArray( options.stores ) ? options.stores : [ options.stores ];
-                for ( item in stores ) {
-                    stores[ item ].remove( delId );
-                }
-            }
-
             if ( options.success ) {
                 options.success.apply( this, arguments );
             }
         };
         error = function( type, errorMessage ) {
-            var stores = options.stores ? AeroGear.isArray( options.stores ) ? options.stores : [ options.stores ] : [],
-                item;
-
-            if ( type === "auth" && stores.length ) {
-                // If auth error, clear existing data for security
-                for ( item in stores ) {
-                    stores[ item ].remove();
-                }
-            }
-
             if ( options.error ) {
                 options.error.apply( this, arguments );
             }

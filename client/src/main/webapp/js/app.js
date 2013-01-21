@@ -188,6 +188,7 @@ $( function() {
                 case "project":
                     Projects.save( data, {
                         success: function( data ) {
+                            ProjectsStore.save( data );
                             updateProjectList();
                             if ( isUpdate ) {
                                 updateTaskList();
@@ -199,13 +200,13 @@ $( function() {
                             401: function( jqXHR ) {
                                 $( "#auth-error-box" ).modal();
                             }
-                        },
-                        stores: ProjectsStore
+                        }
                     } );
                     break;
                 case "tag":
                     Tags.save( data, {
                         success: function( data ) {
+                            TagsStore.save( data );
                             updateTagList();
                             if ( isUpdate ) {
                                 updateTaskList();
@@ -216,8 +217,7 @@ $( function() {
                             401: function( jqXHR ) {
                                 $( "#auth-error-box" ).modal();
                             }
-                        },
-                        stores: TagsStore
+                        }
                     } );
                     break;
                 case "task":
@@ -232,6 +232,7 @@ $( function() {
                     data.tags = tags;
                     Tasks.save( data, {
                         success: function( data ) {
+                            TasksStore.save( data );
                             updateTaskList();
                             $( "#add-task" ).find( ".submit-btn" ).html( plus + " Add Task" );
                         },
@@ -239,8 +240,7 @@ $( function() {
                             401: function( jqXHR ) {
                                 $( "#auth-error-box" ).modal();
                             }
-                        },
-                        stores: [ TasksStore ]
+                        }
                     });
                     break;
                 case "login":
@@ -361,15 +361,15 @@ $( function() {
         }
         switch( type ) {
             case "project":
-                options.stores = ProjectsStore;
+                ProjectsStore.remove( dataTarget.data( "id" ) );
                 Projects.remove( dataTarget.data( "id" ), options );
                 break;
             case "tag":
-                options.stores = TagsStore;
+                TagsStore.remove( dataTarget.data( "id" ) );
                 Tags.remove( dataTarget.data( "id" ), options );
                 break;
             case "task":
-                options.stores = TasksStore;
+                TasksStore.remove( dataTarget.data( "id" ) );
                 Tasks.remove( dataTarget.data( "id" ), options );
                 break;
         }
@@ -554,29 +554,27 @@ $( function() {
         var projectGet, tagGet;
 
         projectGet = Projects.read({
-            complete: function() {
+            success: function( data, textStatus, jqXHR ) {
+                ProjectsStore.save( data );
                 $( "#project-loader" ).hide();
                 updateProjectList();
-            },
-            //setting the store
-            stores: ProjectsStore
+            }
         });
 
         tagGet = Tags.read({
-            complete: function( data, textStatus, jqXHR ) {
+            success: function( data, textStatus, jqXHR ) {
+                TagsStore.save( data );
                 if ( data && data.length ) {
                     $( "#task-tag-column" ).empty();
                 }
                 $( "#tag-loader" ).hide();
                 updateTagList();
-            },
-            //setting the store
-            stores: TagsStore
+            }
         });
 
         // When both the available projects and available tags have returned, get the task data
-        $.when( projectGet, tagGet, Tasks.read( { stores: [ TasksStore ] } ) ).done( function( g1, g2, g3 ) {
-
+        $.when( projectGet, tagGet, Tasks.read() ).done( function( g1, g2, g3 ) {
+            TasksStore.save( g3[ 0 ] );
             $( "#userinfo-name" ).text( sessionStorage.getItem( "username" ) );
             $( "#userinfo-msg" ).show();
         })
@@ -592,7 +590,6 @@ $( function() {
             updateTaskList();
         });
     }
-
 
     function updateTaskList( filtered ) {
 
