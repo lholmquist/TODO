@@ -67,6 +67,8 @@ public class GrantConfiguration implements IDMHelper.GrantMethods {
 
         if (picketLinkUser == null) {
             picketLinkUser = new SimpleUser(aeroGearUser.getUsername());
+            picketLinkUser.setFirstName(aeroGearUser.getFirstname());
+            picketLinkUser.setLastName(aeroGearUser.getLastname());
             identityManager.add(picketLinkUser);
         }
 
