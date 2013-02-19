@@ -49,7 +49,7 @@ public class HttpResponseBuilder {
             UserContext userContext = identity.getUserContext();
             token = userContext.getSession().getId().getId().toString();
             Collection<String> roles = userContext.getRoleNames();
-            aeroGearCredential = new AeroGearCredential(userContext.getUser().getId(), LOGGED, roles);
+            aeroGearCredential = new AeroGearCredential(userContext.getUser().getFirstName(), LOGGED, roles);
         }
 
         return Response.ok(aeroGearCredential).header("Auth-Token", token).build();
