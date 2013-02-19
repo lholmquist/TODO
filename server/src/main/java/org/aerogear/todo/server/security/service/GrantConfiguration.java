@@ -22,6 +22,7 @@ import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.credential.internal.Password;
 import org.picketlink.idm.model.Role;
 import org.picketlink.idm.model.SimpleRole;
+import org.picketlink.idm.model.SimpleUser;
 import org.picketlink.idm.model.User;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -63,6 +64,12 @@ public class GrantConfiguration implements IDMHelper.GrantMethods {
          * Disclaimer: PlainTextPassword will encode passwords in SHA-512 with SecureRandom-1024 salt
          * See http://lists.jboss.org/pipermail/security-dev/2013-January/000650.html for more information
          */
+
+        if (picketLinkUser == null) {
+            picketLinkUser = new SimpleUser(aeroGearUser.getUsername());
+            identityManager.add(picketLinkUser);
+        }
+
         identityManager.updateCredential(picketLinkUser, new Password(aeroGearUser.getPassword()));
 
         for (Role role : list) {
