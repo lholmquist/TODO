@@ -45,28 +45,33 @@ public class PicketLinkLoadUsers {
     @PostConstruct
     public void create() {
 
-        User user = new SimpleUser("john");
+        buildNewUser("john", "john@doe.org", "John", "Doe", "123", "admin");
+        buildNewUser("jane", "jane@doe.org", "Jane", "Doe", "123", "simple");
+    }
 
-        user.setEmail("john@doe.com");
-        user.setFirstName("John");
-        user.setLastName("Doe");
+    private User buildNewUser(String username, String email, String firstname, String lastname, String password, String role) {
+
+        User user = new SimpleUser(username);
+
+        user.setEmail(email);
+        user.setFirstName(firstname);
+        user.setLastName(lastname);
 
         /*
          * Note: Password will be encoded in SHA-512 with SecureRandom-1024 salt
          * See http://lists.jboss.org/pipermail/security-dev/2013-January/000650.html for more information
          */
+
         this.identityManager.add(user);
-        this.identityManager.updateCredential(user, new Password("123"));
+        this.identityManager.updateCredential(user, new Password(password));
 
-        Role roleDeveloper = new SimpleRole("simple");
-        Role roleAdmin = new SimpleRole("admin");
+        Role simpleRole = new SimpleRole(role);
 
-        this.identityManager.add(roleDeveloper);
-        this.identityManager.add(roleAdmin);
+        this.identityManager.add(simpleRole);
 
-        identityManager.grantRole(user, roleDeveloper);
-        identityManager.grantRole(user, roleAdmin);
+        identityManager.grantRole(user, simpleRole);
 
+        return user;
     }
 
 }
