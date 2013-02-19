@@ -17,13 +17,13 @@
 
 package org.aerogear.todo.server.security.filter;
 
-import org.jboss.picketlink.cdi.authentication.AuthenticationException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.picketbox.cdi.PicketBoxIdentity;
+import org.picketlink.authentication.AuthenticationException;
+import org.picketlink.extensions.core.pbox.PicketBoxIdentity;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
