@@ -16,69 +16,43 @@
  */
 package org.aerogear.todo.server.security.config;
 
-import org.jboss.picketlink.idm.IdentityManager;
-import org.jboss.picketlink.idm.internal.JPAIdentityStore;
-import org.jboss.picketlink.idm.internal.jpa.JPATemplate;
-import org.picketbox.cdi.config.CDIConfigurationBuilder;
 import org.picketbox.core.config.ConfigurationBuilder;
+import org.picketbox.core.identity.jpa.EntityManagerLookupStrategy;
 
 import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 
 /**
- * <p>Bean responsible for producing the {@link CDIConfigurationBuilder}.</p>
- * 
- * @author <a href="mailto:psilva@redhat.com">Pedro Silva</a>
+ * <p>
+ * Bean responsible for producing the {@link ConfigurationBuilder}.
+ * </p>
  *
+ * @author <a href="mailto:psilva@redhat.com">Pedro Silva</a>
  */
 public class PicketBoxConfigurer {
 
     public static final int TIMEOUT_IN_MINUTES = 30;
-    @Inject
-    private EntityManager entityManager;
 
     @Inject
-    private BeanManager beanManager;
-    
+    private EntityManagerLookupStrategy entityManagerLookupStrategy;
+
     /**
      * <p>Produces the {@link ConfigurationBuilder}.</p>
-     * 
+     *
      * @return
      */
     @Produces
     public ConfigurationBuilder produceConfiguration() {
-        CDIConfigurationBuilder builder = new CDIConfigurationBuilder(this.beanManager);
-        
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+
         builder
-            .authentication()
-                .idmAuthentication()
-            .identityManager()
-                .providedStore()
-            .sessionManager()
+                .identityManager()
+                .jpaStore()
+                .entityManagerLookupStrategy(this.entityManagerLookupStrategy)
+                .sessionManager()
                 .sessionTimeout(TIMEOUT_IN_MINUTES)
                 .inMemorySessionStore();
-        
+
         return builder;
     }
-    
-    /**
-     * <p>Produces the {@link JPAIdentityStore} that will be used by the PicketLink IDM {@link IdentityManager}.</p>
-     * 
-     * @return
-     */
-    @Produces
-    public JPAIdentityStore produceIdentityStore() {
-        JPAIdentityStore identityStore = new JPAIdentityStore();
-
-        JPATemplate template = new JPATemplate();
-
-        template.setEntityManager(this.entityManager);
-
-        identityStore.setJpaTemplate(template);
-
-        return identityStore;
-    }
-    
 }

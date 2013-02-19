@@ -18,6 +18,7 @@
 package org.aerogear.todo.server.security.idm;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 public class AeroGearCredential implements Serializable {
@@ -26,9 +27,9 @@ public class AeroGearCredential implements Serializable {
     //TODO yep it's duplicated and must be refactored
     private String username;
     private String isLogged;
-    private List<String> roles;
+    private Collection<String> roles;
 
-    public AeroGearCredential(String id, String isLogged, List<String> roles) {
+    public AeroGearCredential(String id, String isLogged, Collection<String> roles) {
         this.username = id;
         this.isLogged = isLogged;
         this.roles = roles;
@@ -50,7 +51,7 @@ public class AeroGearCredential implements Serializable {
         this.username = username;
     }
 
-    public List<String> getRoles() {
+    public Collection<String> getRoles() {
         return roles;
     }
 

@@ -18,10 +18,12 @@
 package org.aerogear.todo.server.security.service;
 
 import org.aerogear.todo.server.security.idm.AeroGearUser;
-import org.aerogear.todo.server.util.PasswordHashing;
-import org.jboss.picketlink.idm.IdentityManager;
-import org.jboss.picketlink.idm.model.Role;
-import org.jboss.picketlink.idm.model.User;
+import org.picketlink.idm.IdentityManager;
+import org.picketlink.idm.credential.internal.Password;
+import org.picketlink.idm.model.Role;
+import org.picketlink.idm.model.SimpleRole;
+import org.picketlink.idm.model.SimpleUser;
+import org.picketlink.idm.model.User;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -39,7 +41,11 @@ public class GrantConfiguration implements IDMHelper.GrantMethods {
     public GrantConfiguration roles(String[] roles) {
         list = new ArrayList<Role>();
         for (String role : roles) {
-            Role newRole = identityManager.createRole(role);
+            Role newRole = identityManager.getRole(role);
+            if (newRole == null) {
+                newRole = new SimpleRole(role);
+                identityManager.add(newRole);
+            }
             list.add(newRole);
         }
         return this;
@@ -48,21 +54,28 @@ public class GrantConfiguration implements IDMHelper.GrantMethods {
     /**
      * Passing null here because the api doesn' allows me to have user without a group
      *
-     * @param user
+     * @param aeroGearUser
      */
     @Override
-    public void to(AeroGearUser user) {
+    public void to(AeroGearUser aeroGearUser) {
 
-        User picketLinkUser = identityManager.createUser(user.getUsername());
-        user.setEmail(picketLinkUser.getEmail());
-        user.setFirstname(picketLinkUser.getFirstName());
-        user.setLastname(picketLinkUser.getLastName());
+        User picketLinkUser = identityManager.getUser(aeroGearUser.getUsername());
+        /*
+         * Disclaimer: PlainTextPassword will encode passwords in SHA-512 with SecureRandom-1024 salt
+         * See http://lists.jboss.org/pipermail/security-dev/2013-January/000650.html for more information
+         */
 
-        identityManager.updatePassword(picketLinkUser, user.getPassword());
-
-        for (Role role : list) {
-            identityManager.grantRole(role, picketLinkUser, null);
+        if (picketLinkUser == null) {
+            picketLinkUser = new SimpleUser(aeroGearUser.getUsername());
+            picketLinkUser.setFirstName(aeroGearUser.getFirstname());
+            picketLinkUser.setLastName(aeroGearUser.getLastname());
+            identityManager.add(picketLinkUser);
         }
 
+        identityManager.updateCredential(picketLinkUser, new Password(aeroGearUser.getPassword()));
+
+        for (Role role : list) {
+            identityManager.grantRole(picketLinkUser, role);
+        }
     }
 }

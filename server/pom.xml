@@ -52,8 +52,10 @@ enable third-party plugin if using Maven < 2.1) -->
 use version 3.0.0.Beta1-redhat-1 which is a release certified
 to work with JBoss EAP 6. It requires you have access to the JBoss EAP 6 maven repository. -->
         <!--
-        <javaee6.spec.version>3.0.0.Beta1-redhat-1</javaee6.spec.version>
-        -->
+        <javaee6.spec.version>3.0.0.Beta1-redhat-1</javaee6.spec.version>      -->
+
+        <!-- Latest stable release of PicketLink -->
+        <picketlink.version>3.0.0-2013Feb08</picketlink.version>
     </properties>
 
     <dependencyManagement>
@@ -75,19 +77,14 @@ read this as the JBoss stack of the Java EE 6 APIs) -->
     </dependencyManagement>
 
     <dependencies>
-		
-		<!-- PicketBox CDI -->
-    	<dependency>
-    		<groupId>org.picketbox</groupId>
-    		<artifactId>picketbox-core</artifactId>
-    		<version>5.0.0-2012Sep26</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>org.picketbox</groupId>
-    		<artifactId>picketbox-cdi</artifactId>
-    		<version>5.0.0-2012Sep26</version>
-    	</dependency>
-		
+
+        <!-- PicketLink Extensions -->
+        <dependency>
+            <groupId>org.picketlink.extensions</groupId>
+            <artifactId>picketlink-extensions-core</artifactId>
+            <version>3.0.0-2013Feb01</version>
+        </dependency>
+
         <!-- First declare the APIs we depend on and need for compilation.
  All of them are provided by JBoss -->
 
