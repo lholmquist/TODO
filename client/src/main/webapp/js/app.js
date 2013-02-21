@@ -248,9 +248,7 @@ $( function() {
                     sessionStorage.removeItem( "username" );
                     sessionStorage.removeItem( "access" );
 
-                    restAuth.login( JSON.stringify( data ), {
-                        contentType: "application/json",
-                        dataType: "json",
+                    restAuth.login( data, {
                         success: function( data ) {
                             var role = $.inArray( "admin", data.roles ) >= 0 ? 1 : 0;
                             sessionStorage.setItem( "username", data.username );
@@ -269,9 +267,7 @@ $( function() {
                     sessionStorage.removeItem( "username" );
                     sessionStorage.removeItem( "access" );
 
-                    restAuth.enroll( JSON.stringify( data ), {
-                        contentType: "application/json",
-                        dataType: "json",
+                    restAuth.enroll( data, {
                         success: function( data ) {
                             var role = $.inArray( "admin", data.roles ) >= 0 ? 1 : 0;
                             sessionStorage.setItem( "username", data.username );
