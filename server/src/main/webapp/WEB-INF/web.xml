@@ -14,4 +14,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
+    <filter>
+        <filter-name>TokenServletFilter</filter-name>
+        <filter-class>org.jboss.aerogear.security.picketlink.http.TokenServletFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>TokenServletFilter</filter-name>
+        <url-pattern>/auth/*</url-pattern>
+    </filter-mapping>
+
 </web-app>
