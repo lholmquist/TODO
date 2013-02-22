@@ -18,6 +18,7 @@ package org.aerogear.todo.server.rest;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
@@ -30,7 +31,6 @@ import org.aerogear.todo.server.model.Task;
 @TransactionAttribute
 public class TagEndpoint {
     
-    @PersistenceContext
     private EntityManager em;
 
     public Tag create(Tag entity) {

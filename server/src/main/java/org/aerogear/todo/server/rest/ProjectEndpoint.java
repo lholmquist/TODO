@@ -17,8 +17,8 @@
 package org.aerogear.todo.server.rest;
 
 import org.aerogear.todo.server.model.Project;
-import org.picketlink.extensions.core.pbox.authorization.RolesAllowed;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
@@ -38,7 +38,6 @@ import java.util.List;
 @TransactionAttribute
 public class ProjectEndpoint {
     
-    @PersistenceContext
     private EntityManager em;
 
     public Project create(Project entity) {

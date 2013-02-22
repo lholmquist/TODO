@@ -57,6 +57,8 @@ to work with JBoss EAP 6. It requires you have access to the JBoss EAP 6 maven r
         <!-- Latest stable release of PicketLink -->
         <picketlink.version>3.0.0-2013Feb08</picketlink.version>
         <aerogear.controller.version>1.0.0.CR1-20022013-SNAPSHOT</aerogear.controller.version>
+        <aerogear.security.version>1.0.0.CR1-SNAPSHOT</aerogear.security.version>
+
     </properties>
 
     <dependencyManagement>
@@ -79,12 +81,19 @@ read this as the JBoss stack of the Java EE 6 APIs) -->
 
     <dependencies>
 
-        <!-- PicketLink Extensions -->
         <dependency>
-            <groupId>org.picketlink.extensions</groupId>
-            <artifactId>picketlink-extensions-core</artifactId>
-            <version>3.0.0-2013Feb01</version>
+            <groupId>org.jboss.aerogear</groupId>
+            <artifactId>aerogear-security</artifactId>
+            <version>${aerogear.security.version}</version>
+            <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jboss.aerogear</groupId>
+            <artifactId>aerogear-security-picketlink</artifactId>
+            <version>${aerogear.security.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
 
         <!-- First declare the APIs we depend on and need for compilation.
  All of them are provided by JBoss -->

@@ -18,6 +18,7 @@ package org.aerogear.todo.server.rest;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
@@ -29,7 +30,6 @@ import org.aerogear.todo.server.model.Task;
 @TransactionAttribute
 public class TaskEndpoint {
     
-    @PersistenceContext
     private EntityManager em;
 
     public Task create(Task entity) {
