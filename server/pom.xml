@@ -81,18 +81,18 @@ read this as the JBoss stack of the Java EE 6 APIs) -->
 
     <dependencies>
 
-        <!--<dependency>-->
-            <!--<groupId>org.jboss.aerogear</groupId>-->
-            <!--<artifactId>aerogear-security</artifactId>-->
-            <!--<version>${aerogear.security.version}</version>-->
-            <!--<scope>compile</scope>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.jboss.aerogear</groupId>-->
-            <!--<artifactId>aerogear-security-picketlink</artifactId>-->
-            <!--<version>${aerogear.security.version}</version>-->
-            <!--<scope>compile</scope>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.jboss.aerogear</groupId>
+            <artifactId>aerogear-security</artifactId>
+            <version>${aerogear.security.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.aerogear</groupId>
+            <artifactId>aerogear-security-picketlink</artifactId>
+            <version>${aerogear.security.version}</version>
+            <scope>compile</scope>
+        </dependency>
 
 
         <!-- First declare the APIs we depend on and need for compilation.

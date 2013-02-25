@@ -17,17 +17,18 @@
 
 package org.aerogear.todo.server;
 
-import org.aerogear.todo.server.model.AeroGearUser;
 import org.aerogear.todo.server.model.Project;
 import org.aerogear.todo.server.model.Tag;
 import org.aerogear.todo.server.model.Task;
 import org.aerogear.todo.server.rest.LoginEndpoint;
 import org.aerogear.todo.server.rest.ProjectEndpoint;
+import org.aerogear.todo.server.rest.RegisterEndpoint;
 import org.aerogear.todo.server.rest.TagEndpoint;
 import org.aerogear.todo.server.rest.TaskEndpoint;
 import org.jboss.aerogear.controller.router.AbstractRoutingModule;
 import org.jboss.aerogear.controller.router.MediaType;
 import org.jboss.aerogear.controller.router.RequestMethod;
+import org.jboss.aerogear.security.model.AeroGearUser;
 
 public class Routes extends AbstractRoutingModule {
 
@@ -147,10 +148,22 @@ public class Routes extends AbstractRoutingModule {
                 .to(LoginEndpoint.class).login(param(AeroGearUser.class));
         route()
                 .from("/auth/logout")
-                .on(RequestMethod.GET)
+                .on(RequestMethod.POST)
                 .consumes(JSON)
                 .produces(MediaType.JSON)
                 .to(LoginEndpoint.class).logout();
+        route()
+                .from("/auth/enroll")
+                .on(RequestMethod.GET)
+                .consumes(JSON)
+                .produces(MediaType.JSON)
+                .to(RegisterEndpoint.class).index();
+        route()
+                .from("/auth/enroll")
+                .on(RequestMethod.POST)
+                .consumes(JSON)
+                .produces(MediaType.JSON)
+                .to(RegisterEndpoint.class).register(param(AeroGearUser.class));
 
     }
 
