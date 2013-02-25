@@ -16,17 +16,20 @@
  */
 package org.aerogear.todo.server.rest;
 
-import org.aerogear.todo.server.model.Project;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
-import java.util.List;
+import javax.persistence.PersistenceContext;
+
+import org.aerogear.todo.server.model.Project;
 
 @Stateless
 @TransactionAttribute
 public class ProjectEndpoint {
 
+    @PersistenceContext(unitName = "todo-default")
     private EntityManager em;
 
     public Project create(Project entity) {

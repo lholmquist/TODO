@@ -16,18 +16,21 @@
  */
 package org.aerogear.todo.server.rest;
 
-import org.aerogear.todo.server.model.Tag;
-import org.aerogear.todo.server.model.Task;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
-import java.util.List;
+import javax.persistence.PersistenceContext;
+
+import org.aerogear.todo.server.model.Tag;
+import org.aerogear.todo.server.model.Task;
 
 @Stateless
 @TransactionAttribute
 public class TagEndpoint {
 
+    @PersistenceContext(unitName = "todo-default")
     private EntityManager em;
 
     public Tag create(Tag entity) {
