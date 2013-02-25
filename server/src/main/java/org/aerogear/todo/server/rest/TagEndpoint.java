@@ -16,46 +16,30 @@
  */
 package org.aerogear.todo.server.rest;
 
-import org.aerogear.todo.server.model.Tag;
-import org.aerogear.todo.server.model.Task;
-import org.picketlink.extensions.core.pbox.authorization.RolesAllowed;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import java.util.List;
+
+import org.aerogear.todo.server.model.Tag;
+import org.aerogear.todo.server.model.Task;
 
 @Stateless
-@Path("/tags")
 @TransactionAttribute
-@RolesAllowed({"admin"})
 public class TagEndpoint {
+    
     @PersistenceContext
     private EntityManager em;
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Tag create(Tag entity) {
         em.persist(entity);
         return entity;
     }
 
-    @DELETE
-    @Path("/{id:[0-9][0-9]*}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Long> deleteById(@PathParam("id")
-                                 Long id) {
+    public List<Long> deleteById(String idParam) {
+        long id = Long.valueOf(idParam);
 
         //@TODO extract it to another class
         @SuppressWarnings("unchecked")
@@ -74,31 +58,18 @@ public class TagEndpoint {
         return taskIds;
     }
 
-    @GET
-    @Path("/{id:[0-9][0-9]*}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin", "simple"})
-    public Tag findById(@PathParam("id")
-                        Long id) {
-        return em.find(Tag.class, id);
+    public Tag findById(String id) {
+        return em.find(Tag.class, Long.valueOf(id));
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin", "simple"})
     public List<Tag> listAll() {
         @SuppressWarnings("unchecked")
         final List<Tag> results = em.createQuery("SELECT x FROM Tag x").getResultList();
         return results;
     }
 
-    @PUT
-    @Path("/{id:[0-9][0-9]*}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Tag update(@PathParam("id")
-                      Long id, Tag entity) {
-        entity.setId(id);
+    public Tag update(String id, Tag entity) {
+        entity.setId(Long.valueOf(id));
         entity = em.merge(entity);
         return entity;
     }

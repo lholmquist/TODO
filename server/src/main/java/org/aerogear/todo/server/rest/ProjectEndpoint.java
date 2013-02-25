@@ -35,31 +35,24 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Stateless
-@Path("/projects")
 @TransactionAttribute
-@RolesAllowed({"admin"})
 public class ProjectEndpoint {
+    
     @PersistenceContext
     private EntityManager em;
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Project create(Project entity) {
         em.persist(entity);
         return entity;
     }
 
-    @DELETE
-    @Path("/{id:[0-9][0-9]*}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Long> deleteById(@PathParam("id")
-                                 Long id) {
+    public List<Long> deleteById(String idParam) {
+        long id = Long.valueOf(idParam);
 
         //@TODO extract it to another class
         @SuppressWarnings("unchecked")
         List<Long> taskIds = em.createQuery("select c.id from Task c inner join c.project o where o.id = :id")
-                .setParameter("id", id)
+                .setParameter("id", Long.valueOf(id))
                 .getResultList();
 
 
@@ -74,31 +67,18 @@ public class ProjectEndpoint {
         return taskIds;
     }
 
-    @GET
-    @Path("/{id:[0-9][0-9]*}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin", "simple"})
-    public Project findById(@PathParam("id")
-                            Long id) {
-        return em.find(Project.class, id);
+    public Project findById(String id) {
+        return em.find(Project.class, Long.valueOf(id));
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin", "simple"})
     public List<Project> listAll() {
         @SuppressWarnings("unchecked")
         final List<Project> results = em.createQuery("SELECT x FROM Project x").getResultList();
         return results;
     }
 
-    @PUT
-    @Path("/{id:[0-9][0-9]*}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Project update(@PathParam("id")
-                          Long id, Project entity) {
-        entity.setId(id);
+    public Project update(String id, Project entity) {
+        entity.setId(Long.valueOf(id));
         entity = em.merge(entity);
         return entity;
     }
