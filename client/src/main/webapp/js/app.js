@@ -24,7 +24,7 @@ $( function() {
             agAuth: true,
             baseURL: "/todo-server/",
             endpoints: {
-                enroll: "auth/register"
+                enroll: "auth/enroll"
             }
         }
     }).modules.auth;
