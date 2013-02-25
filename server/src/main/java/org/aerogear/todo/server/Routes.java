@@ -18,7 +18,9 @@
 package org.aerogear.todo.server;
 
 import org.aerogear.todo.server.model.Project;
+import org.aerogear.todo.server.model.Task;
 import org.aerogear.todo.server.rest.ProjectEndpoint;
+import org.aerogear.todo.server.rest.TaskEndpoint;
 import org.jboss.aerogear.controller.router.AbstractRoutingModule;
 import org.jboss.aerogear.controller.router.MediaType;
 import org.jboss.aerogear.controller.router.RequestMethod;
@@ -62,7 +64,42 @@ public class Routes extends AbstractRoutingModule {
                 .consumes(JSON)
                 .produces(MediaType.JSON)
                 .to(ProjectEndpoint.class).update(param("id"), param(Project.class));
-    }
+        route()
+                .from("/tasks")
+                .roles("admin", "simple")
+                .on(RequestMethod.POST)
+                .consumes(JSON)
+                .produces(MediaType.JSON)
+                .to(TaskEndpoint.class).create(param(Task.class));
+        route()
+                .from("/tasks/{id}")
+                .roles("admin", "simple" )
+                .on(RequestMethod.DELETE)
+                .consumes(JSON)
+                .produces(MediaType.JSON)
+                .to(TaskEndpoint.class).deleteById(param("id"));
+        route()
+                .from("/tasks/{id}")
+                .roles("admin", "simple")
+                .on(RequestMethod.GET)
+                .consumes(JSON)
+                .produces(MediaType.JSON)
+                .to(TaskEndpoint.class).findById(param("id"));
+        route()
+                .from("/tasks")
+                .roles("admin", "simple")
+                .on(RequestMethod.GET)
+                .consumes(JSON)
+                .produces(MediaType.JSON)
+                .to(TaskEndpoint.class).listAll();
+        route()
+                .from("/tasks/{id}")
+                .roles("admin", "simple")
+                .on(RequestMethod.PUT)
+                .consumes(JSON)
+                .produces(MediaType.JSON)
+                .to(TaskEndpoint.class).update(param("id"), param(Task.class));
+        }
 }
     
     
