@@ -18,8 +18,10 @@
 package org.aerogear.todo.server;
 
 import org.aerogear.todo.server.model.Project;
+import org.aerogear.todo.server.model.Tag;
 import org.aerogear.todo.server.model.Task;
 import org.aerogear.todo.server.rest.ProjectEndpoint;
+import org.aerogear.todo.server.rest.TagEndpoint;
 import org.aerogear.todo.server.rest.TaskEndpoint;
 import org.jboss.aerogear.controller.router.AbstractRoutingModule;
 import org.jboss.aerogear.controller.router.MediaType;
@@ -99,6 +101,41 @@ public class Routes extends AbstractRoutingModule {
                 .consumes(JSON)
                 .produces(MediaType.JSON)
                 .to(TaskEndpoint.class).update(param("id"), param(Task.class));
+        route()
+                .from("/tags")
+                .roles("admin")
+                .on(RequestMethod.POST)
+                .consumes(JSON)
+                .produces(MediaType.JSON)
+                .to(TagEndpoint.class).create(param(Tag.class));
+        route()
+                .from("/tags/{id}")
+                .roles("admin")
+                .on(RequestMethod.DELETE)
+                .consumes(JSON)
+                .produces(MediaType.JSON)
+                .to(TagEndpoint.class).deleteById(param("id"));
+        route()
+                .from("/tags/{id}")
+                .roles("admin", "simple")
+                .on(RequestMethod.GET)
+                .consumes(JSON)
+                .produces(MediaType.JSON)
+                .to(TagEndpoint.class).findById(param("id"));
+        route()
+                .from("/tags")
+                .roles("admin", "simple")
+                .on(RequestMethod.GET)
+                .consumes(JSON)
+                .produces(MediaType.JSON)
+                .to(TagEndpoint.class).listAll();
+        route()
+                .from("/tags/{id}")
+                .roles("admin")
+                .on(RequestMethod.PUT)
+                .consumes(JSON)
+                .produces(MediaType.JSON)
+                .to(TagEndpoint.class).update(param("id"), param(Tag.class));
         }
 }
     
