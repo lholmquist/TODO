@@ -17,9 +17,11 @@
 
 package org.aerogear.todo.server;
 
+import org.aerogear.todo.server.model.AeroGearUser;
 import org.aerogear.todo.server.model.Project;
 import org.aerogear.todo.server.model.Tag;
 import org.aerogear.todo.server.model.Task;
+import org.aerogear.todo.server.rest.LoginEndpoint;
 import org.aerogear.todo.server.rest.ProjectEndpoint;
 import org.aerogear.todo.server.rest.TagEndpoint;
 import org.aerogear.todo.server.rest.TaskEndpoint;
@@ -75,7 +77,7 @@ public class Routes extends AbstractRoutingModule {
                 .to(TaskEndpoint.class).create(param(Task.class));
         route()
                 .from("/tasks/{id}")
-                .roles("admin", "simple" )
+                .roles("admin", "simple")
                 .on(RequestMethod.DELETE)
                 .consumes(JSON)
                 .produces(MediaType.JSON)
@@ -136,7 +138,22 @@ public class Routes extends AbstractRoutingModule {
                 .consumes(JSON)
                 .produces(MediaType.JSON)
                 .to(TagEndpoint.class).update(param("id"), param(Tag.class));
-        }
+
+        route()
+                .from("/auth/login")
+                .on(RequestMethod.POST)
+                .consumes(JSON)
+                .produces(MediaType.JSON)
+                .to(LoginEndpoint.class).login(param(AeroGearUser.class));
+        route()
+                .from("/auth/logout")
+                .on(RequestMethod.GET)
+                .consumes(JSON)
+                .produces(MediaType.JSON)
+                .to(LoginEndpoint.class).logout();
+
+    }
+
 }
     
     

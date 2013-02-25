@@ -16,20 +16,17 @@
  */
 package org.aerogear.todo.server.rest;
 
-import java.util.List;
+import org.aerogear.todo.server.model.Task;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.aerogear.todo.server.model.Task;
+import java.util.List;
 
 @Stateless
 @TransactionAttribute
 public class TaskEndpoint {
-    
+
     private EntityManager em;
 
     public Task create(Task entity) {
