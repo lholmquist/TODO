@@ -14,15 +14,4 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
-    <filter>
-        <filter-name>AuthzFilter</filter-name>
-        <filter-class> org.aerogear.todo.server.http.AuthzFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>AuthzFilter</filter-name>
-        <url-pattern>/auth/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
-    </filter-mapping>
-
 </web-app>
