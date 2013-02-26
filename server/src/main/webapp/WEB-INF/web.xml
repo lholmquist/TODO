@@ -15,12 +15,14 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
     <filter>
-        <filter-name>TokenServletFilter</filter-name>
-        <filter-class>org.jboss.aerogear.security.picketlink.http.TokenServletFilter</filter-class>
+        <filter-name>AuthzFilter</filter-name>
+        <filter-class> org.aerogear.todo.server.http.AuthzFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>TokenServletFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <filter-name>AuthzFilter</filter-name>
+        <url-pattern>/auth/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
 
 </web-app>
