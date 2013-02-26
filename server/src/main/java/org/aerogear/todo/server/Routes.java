@@ -20,16 +20,12 @@ package org.aerogear.todo.server;
 import org.aerogear.todo.server.model.Project;
 import org.aerogear.todo.server.model.Tag;
 import org.aerogear.todo.server.model.Task;
-import org.aerogear.todo.server.rest.LoginEndpoint;
 import org.aerogear.todo.server.rest.ProjectEndpoint;
-import org.aerogear.todo.server.rest.RegisterEndpoint;
 import org.aerogear.todo.server.rest.TagEndpoint;
 import org.aerogear.todo.server.rest.TaskEndpoint;
 import org.jboss.aerogear.controller.router.AbstractRoutingModule;
 import org.jboss.aerogear.controller.router.MediaType;
 import org.jboss.aerogear.controller.router.RequestMethod;
-import org.jboss.aerogear.security.model.AeroGearUser;
-import static org.aerogear.todo.server.config.CustomMediaTypeResponder.*;
 
 public class Routes extends AbstractRoutingModule {
 
@@ -141,30 +137,31 @@ public class Routes extends AbstractRoutingModule {
                 .produces(MediaType.JSON)
                 .to(TagEndpoint.class).update(param("id"), param(Tag.class));
 
-        route()
-                .from("/auth/login")
-                .on(RequestMethod.POST)
-                .consumes(CUSTOM_MEDIA_TYPE)
-                .produces(CUSTOM_MEDIA_TYPE)
-                .to(LoginEndpoint.class).login(param(AeroGearUser.class));
-        route()
-                .from("/auth/logout")
-                .on(RequestMethod.POST)
-                .consumes(CUSTOM_MEDIA_TYPE)
-                .produces(CUSTOM_MEDIA_TYPE)
-                .to(LoginEndpoint.class).logout();
-        route()
-                .from("/auth/enroll")
-                .on(RequestMethod.GET)
-                .consumes(CUSTOM_MEDIA_TYPE)
-                .produces(CUSTOM_MEDIA_TYPE)
-                .to(RegisterEndpoint.class).index();
-        route()
-                .from("/auth/enroll")
-                .on(RequestMethod.POST)
-                .consumes(CUSTOM_MEDIA_TYPE)
-                .produces(CUSTOM_MEDIA_TYPE)
-                .to(RegisterEndpoint.class).register(param(AeroGearUser.class));
+
+//        route()
+//                .from("/auth/login")
+//                .on(RequestMethod.POST)
+//                .consumes(CUSTOM_MEDIA_TYPE)
+//                .produces(CUSTOM_MEDIA_TYPE)
+//                .to(LoginEndpoint.class).login(param(AeroGearUser.class));
+//        route()
+//                .from("/auth/logout")
+//                .on(RequestMethod.POST)
+//                .consumes(CUSTOM_MEDIA_TYPE)
+//                .produces(CUSTOM_MEDIA_TYPE)
+//                .to(LoginEndpoint.class).logout();
+//        route()
+//                .from("/auth/enroll")
+//                .on(RequestMethod.GET)
+//                .consumes(CUSTOM_MEDIA_TYPE)
+//                .produces(CUSTOM_MEDIA_TYPE)
+//                .to(RegisterEndpoint.class).index();
+//        route()
+//                .from("/auth/enroll")
+//                .on(RequestMethod.POST)
+//                .consumes(CUSTOM_MEDIA_TYPE)
+//                .produces(CUSTOM_MEDIA_TYPE)
+//                .to(RegisterEndpoint.class).register(param(AeroGearUser.class));
 
     }
 
