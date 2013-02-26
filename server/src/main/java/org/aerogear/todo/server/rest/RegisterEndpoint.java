@@ -22,7 +22,7 @@ public class RegisterEndpoint {
 
     public AeroGearUser register(AeroGearUser user) {
         configuration.create(user);
-        configuration.grant(user.getRole()).to(user);
+        //configuration.grant(user.getRole()).to(user);
         authenticationManager.login(user);
         return user;
     }
