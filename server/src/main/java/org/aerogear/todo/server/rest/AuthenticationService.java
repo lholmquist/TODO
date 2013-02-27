@@ -41,7 +41,6 @@ import java.util.List;
 public class AuthenticationService {
 
     //TODO it must be replaced by some admin page
-    public static final String DEFAULT_ROLE = "admin";
     private static final String AUTH_TOKEN = "Auth-Token";
 
     @Inject
@@ -91,7 +90,7 @@ public class AuthenticationService {
      */
     public AeroGearUser register(AeroGearUser aeroGearUser) {
         configuration.create(aeroGearUser);
-        configuration.grant(DEFAULT_ROLE).to(aeroGearUser);
+        configuration.grant(aeroGearUser.getRole()).to(aeroGearUser);
         authenticationManager.login(aeroGearUser);
         headers.fire(new ResponseHeaders(AUTH_TOKEN, token.get().toString()));
         return aeroGearUser;
