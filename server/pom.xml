@@ -55,9 +55,8 @@ to work with JBoss EAP 6. It requires you have access to the JBoss EAP 6 maven r
         <javaee6.spec.version>3.0.0.Beta1-redhat-1</javaee6.spec.version>      -->
 
         <!-- Latest stable release of PicketLink -->
-        <picketlink.version>3.0.0-2013Feb08</picketlink.version>
-        <aerogear.controller.version>1.0.0.CR1-SNAPSHOT</aerogear.controller.version>
-        <aerogear.security.version>1.0.0.CR1-SNAPSHOT</aerogear.security.version>
+        <aerogear.controller.version>1.0.0.CR1-27022013-SNAPSHOT</aerogear.controller.version>
+        <aerogear.security.version>1.0.0.CR1-27022013-SNAPSHOT</aerogear.security.version>
 
     </properties>
 
@@ -117,14 +116,6 @@ read this as the JBoss stack of the Java EE 6 APIs) -->
         <dependency>
             <groupId>org.jboss.spec.javax.annotation</groupId>
             <artifactId>jboss-annotations-api_1.1_spec</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- Import the JAX-RS API, we use provided scope as the API is included
-      in JBoss -->
-        <dependency>
-            <groupId>org.jboss.spec.javax.ws.rs</groupId>
-            <artifactId>jboss-jaxrs-api_1.1_spec</artifactId>
             <scope>provided</scope>
         </dependency>
 
