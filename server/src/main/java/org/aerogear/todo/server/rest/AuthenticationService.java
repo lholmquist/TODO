@@ -17,6 +17,7 @@
 
 package org.aerogear.todo.server.rest;
 
+import org.aerogear.todo.server.util.HttpResponse;
 import org.jboss.aerogear.security.auth.AuthenticationManager;
 import org.jboss.aerogear.security.auth.LoggedUser;
 import org.jboss.aerogear.security.auth.Secret;
@@ -34,6 +35,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Default authentication endpoint implementation
@@ -41,7 +44,7 @@ import javax.ws.rs.core.Response;
 @Path("/")
 @Stateless
 @TransactionAttribute
-public class AuthenticationServiceImpl {
+public class AuthenticationService {
 
     //TODO it must be replaced by some admin page
     public static final String DEFAULT_ROLE = "admin";
@@ -77,8 +80,12 @@ public class AuthenticationServiceImpl {
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(final AeroGearUser aeroGearUser) {
 
-        authenticationManager.login(aeroGearUser);
-        return Response.ok(aeroGearUser).header(AUTH_TOKEN, token.get().toString()).build();
+        //This will be removed
+        String isLoggedIn = String.valueOf(authenticationManager.login(aeroGearUser));
+        Collection<String> roles = new ArrayList();
+        roles.add(aeroGearUser.getRole());
+        HttpResponse credential = new HttpResponse(aeroGearUser.getUsername(), isLoggedIn, roles);
+        return Response.ok(credential).header(AUTH_TOKEN, token.get().toString()).build();
     }
 
     /**
