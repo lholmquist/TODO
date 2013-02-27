@@ -18,6 +18,8 @@
 package org.aerogear.todo.server;
 
 import org.aerogear.todo.server.config.CustomMediaTypeResponder;
+import org.aerogear.todo.server.exception.Error;
+import org.aerogear.todo.server.exception.HttpSecurityException;
 import org.aerogear.todo.server.model.Project;
 import org.aerogear.todo.server.model.Tag;
 import org.aerogear.todo.server.model.Task;
@@ -34,6 +36,12 @@ public class Routes extends AbstractRoutingModule {
 
     @Override
     public void configuration() throws Exception {
+
+        route()
+                .on(HttpSecurityException.class)
+                .produces(JSON)
+                .to(Error.class).index(param(HttpSecurityException.class));
+
         route()
                 .from("/projects")
                 .roles("admin")
