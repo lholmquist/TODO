@@ -90,6 +90,7 @@ public class AuthenticationService {
     public AeroGearUser register(AeroGearUser aeroGearUser) {
         configuration.grant(DEFAULT_ROLE).to(aeroGearUser);
         authenticationManager.login(aeroGearUser);
+        headers.fire(new ResponseHeaders(AUTH_TOKEN, token.get().toString()));
         return aeroGearUser;
     }
 
