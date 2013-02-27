@@ -14,7 +14,7 @@ import org.jboss.aerogear.controller.router.rest.JsonResponder;
 @ApplicationScoped
 public class CustomMediaTypeResponder extends JsonResponder {
 
-    public static final MediaType CUSTOM_MEDIA_TYPE = MediaType.JSON;
+    public static final MediaType CUSTOM_MEDIA_TYPE = new MediaType(MediaType.JSON.getType(), CustomMediaTypeResponder.class);
     private ResponseHeaders responseHeaders;
     
     @Override
