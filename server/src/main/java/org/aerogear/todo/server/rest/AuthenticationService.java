@@ -88,12 +88,12 @@ public class AuthenticationService {
      * @param aeroGearUser represents a simple implementation that holds user's credentials.
      * @return HTTP response and the session ID
      */
-    public AeroGearUser register(AeroGearUser aeroGearUser) {
+    public HttpResponse register(AeroGearUser aeroGearUser) {
         configuration.create(aeroGearUser);
         configuration.grant(aeroGearUser.getRole()).to(aeroGearUser);
         authenticationManager.login(aeroGearUser);
         headers.fire(new ResponseHeaders(AUTH_TOKEN, token.get().toString()));
-        return aeroGearUser;
+        return new HttpResponse(aeroGearUser.getUsername(), roles);
     }
 
     /**
