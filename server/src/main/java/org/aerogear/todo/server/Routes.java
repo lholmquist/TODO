@@ -162,7 +162,7 @@ public class Routes extends AbstractRoutingModule {
                 .to(AuthenticationService.class).logout();
         route()
                 .from("/auth/enroll")
-                .on(RequestMethod.GET)
+                .on(RequestMethod.POST)
                 .consumes(JSON)
                 .produces(CustomMediaTypeResponder.CUSTOM_MEDIA_TYPE)
                 .to(AuthenticationService.class).register(param(AeroGearUser.class));
