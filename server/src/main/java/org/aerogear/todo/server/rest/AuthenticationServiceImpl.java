@@ -45,6 +45,7 @@ public class AuthenticationServiceImpl {
 
     //TODO it must be replaced by some admin page
     public static final String DEFAULT_ROLE = "admin";
+    private static final String AUTH_TOKEN = "Auth-Token";
 
     @Inject
     private AuthenticationManager authenticationManager;
@@ -77,7 +78,7 @@ public class AuthenticationServiceImpl {
     public Response login(final AeroGearUser aeroGearUser) {
 
         authenticationManager.login(aeroGearUser);
-        return Response.ok(aeroGearUser).header("Auth-Token", token.get().toString()).build();
+        return Response.ok(aeroGearUser).header(AUTH_TOKEN, token.get().toString()).build();
     }
 
     /**

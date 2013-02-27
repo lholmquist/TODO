@@ -30,13 +30,15 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class AuthzServletFilter implements Filter {
 
     private static final String AUTH_PATH = "/auth/";
     private static final String AUTH_TOKEN = "Auth-Token";
-    private static final String LOGOUT_PATH = "/auth/logout";
+
+    private static final Logger LOGGER = Logger.getLogger(AuthzServletFilter.class.getSimpleName());
 
     private FilterConfig config;
 
@@ -57,7 +59,15 @@ public class AuthzServletFilter implements Filter {
         String path = httpServletRequest.getRequestURI();
         String token = httpServletRequest.getHeader(AUTH_TOKEN);
 
-        if (!tokenIsValid(token) && (path.contains(LOGOUT_PATH) || !path.contains(AUTH_PATH))) {
+        LOGGER.info("==================================================================");
+
+        LOGGER.info("Is logged in? " + identity.isLoggedIn());
+        LOGGER.info("==================================================================");
+
+
+        if (!identity.isLoggedIn() && (!path.contains(AUTH_PATH))) {
+            LOGGER.info("==================================================================");
+            LOGGER.info("NON AUTHORIZED");
             httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         } else {
             filterChain.doFilter(httpServletRequest, servletResponse);
