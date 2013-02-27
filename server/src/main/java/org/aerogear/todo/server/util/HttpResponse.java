@@ -26,21 +26,11 @@ public class HttpResponse implements Serializable {
 
     //TODO yep it's duplicated and must be refactored
     private String username;
-    private String isLogged;
     private Collection<String> roles;
 
-    public HttpResponse(String id, String isLogged, Collection<String> roles) {
+    public HttpResponse(String id, Collection<String> roles) {
         this.username = id;
-        this.isLogged = isLogged;
         this.roles = roles;
-    }
-
-    public String getLogged() {
-        return isLogged;
-    }
-
-    public void setLogged(String logged) {
-        isLogged = logged;
     }
 
     public String getUsername() {
