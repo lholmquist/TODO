@@ -1,32 +1,40 @@
 package org.aerogear.todo.server.config;
 
+import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
+
+import org.aerogear.todo.server.rest.ResponseHeaders;
 import org.jboss.aerogear.controller.router.MediaType;
 import org.jboss.aerogear.controller.router.RouteContext;
-import org.jboss.aerogear.controller.router.rest.AbstractRestResponder;
-import org.jboss.aerogear.security.auth.Token;
+import org.jboss.aerogear.controller.router.rest.JsonResponder;
 
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
-
-public class CustomMediaTypeResponder extends AbstractRestResponder {
+@ApplicationScoped
+public class CustomMediaTypeResponder extends JsonResponder {
 
     public static final MediaType CUSTOM_MEDIA_TYPE = MediaType.JSON;
-
-    @Inject
-    @Token
-    private Instance<String> token;
+    private ResponseHeaders responseHeaders;
     
-    /**
-     * Sole constructor.
-     */
-    public CustomMediaTypeResponder() {
-        super(CUSTOM_MEDIA_TYPE);
+    @Override
+    public MediaType getMediaType() {
+        return CUSTOM_MEDIA_TYPE;
     }
 
+    public void loggedInHeaders(@Observes ResponseHeaders headers) { 
+        responseHeaders = headers;
+    }
+    
     @Override
     public void writeResponse(Object entity, RouteContext routeContext) throws Exception {
-        if (token != null && token.get() != null) {
-            routeContext.getResponse().setHeader("Auth-Token", token.get().toString());
+        if (responseHeaders.getHeaders() != null) {
+            Set<Entry<String, String>> entrySet = responseHeaders.getHeaders().entrySet();
+            for (Entry<String, String> entry : entrySet) {
+                routeContext.getResponse().setHeader(entry.getKey(), entry.getValue());
+            }
         }
+        super.writeResponse(entity, routeContext);
     }
+
 }

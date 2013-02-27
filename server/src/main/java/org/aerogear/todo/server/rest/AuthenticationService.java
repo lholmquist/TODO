@@ -17,6 +17,15 @@
 
 package org.aerogear.todo.server.rest;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.enterprise.event.Event;
+import javax.enterprise.inject.Instance;
+import javax.inject.Inject;
+
 import org.aerogear.todo.server.util.HttpResponse;
 import org.jboss.aerogear.security.auth.AuthenticationManager;
 import org.jboss.aerogear.security.auth.LoggedUser;
@@ -25,23 +34,9 @@ import org.jboss.aerogear.security.auth.Token;
 import org.jboss.aerogear.security.authz.IdentityManagement;
 import org.jboss.aerogear.security.model.AeroGearUser;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Collection;
-
 /**
  * Default authentication endpoint implementation
  */
-@Path("/")
 @Stateless
 @TransactionAttribute
 public class AuthenticationService {
@@ -67,6 +62,8 @@ public class AuthenticationService {
     @Inject
     @LoggedUser
     private Instance<String> loggedUser;
+    
+    @Inject Event<ResponseHeaders> headers;
 
     /**
      * Logs in the specified {@link org.jboss.aerogear.security.model.AeroGearUser}
@@ -74,18 +71,14 @@ public class AuthenticationService {
      * @param aeroGearUser represents a simple implementation that holds user's credentials.
      * @return HTTP response and the session ID
      */
-    @Path("/login")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response login(final AeroGearUser aeroGearUser) {
-
+    public HttpResponse login(final AeroGearUser aeroGearUser) {
         //This will be removed
         String isLoggedIn = String.valueOf(authenticationManager.login(aeroGearUser));
+        headers.fire(new ResponseHeaders(AUTH_TOKEN, token.get().toString()));
         Collection<String> roles = new ArrayList();
         roles.add(aeroGearUser.getRole());
-        HttpResponse credential = new HttpResponse(aeroGearUser.getUsername(), isLoggedIn, roles);
-        return Response.ok(credential).header(AUTH_TOKEN, token.get().toString()).build();
+        return new HttpResponse(aeroGearUser.getUsername(), isLoggedIn, roles);
+        //return Response.ok(credential).header(AUTH_TOKEN, token.get().toString()).build();
     }
 
     /**
@@ -94,14 +87,10 @@ public class AuthenticationService {
      * @param aeroGearUser represents a simple implementation that holds user's credentials.
      * @return HTTP response and the session ID
      */
-    @Path("/enroll")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response register(AeroGearUser aeroGearUser) {
+    public AeroGearUser register(AeroGearUser aeroGearUser) {
         configuration.grant(DEFAULT_ROLE).to(aeroGearUser);
         authenticationManager.login(aeroGearUser);
-        return Response.ok(aeroGearUser).build();
+        return aeroGearUser;
     }
 
     /**
@@ -111,7 +100,6 @@ public class AuthenticationService {
      *          on logout failure
      *          {@link org.jboss.aerogear.security.exception.HttpExceptionMapper} return the HTTP status code
      */
-    @Path("/logout")
     public void logout() {
         authenticationManager.logout();
     }
