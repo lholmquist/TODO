@@ -137,6 +137,33 @@ public class Routes extends AbstractRoutingModule {
                 .produces(MediaType.JSON)
                 .to(TagEndpoint.class).update(param("id"), param(Tag.class));
 
+//        route()
+//                .from("/auth/login")
+//                .on(RequestMethod.POST)
+//                .consumes(CUSTOM_MEDIA_TYPE)
+//                .produces(CUSTOM_MEDIA_TYPE)
+//                .to(LoginEndpoint.class).login(param(AeroGearUser.class));
+//        route()
+//                .from("/auth/logout")
+//                .on(RequestMethod.POST)
+//                .consumes(CUSTOM_MEDIA_TYPE)
+//                .produces(CUSTOM_MEDIA_TYPE)
+//                .to(LoginEndpoint.class).logout();
+//        route()
+//                .from("/auth/enroll")
+//                .on(RequestMethod.GET)
+//                .consumes(CUSTOM_MEDIA_TYPE)
+//                .produces(CUSTOM_MEDIA_TYPE)
+//                .to(RegisterEndpoint.class).index();
+//        route()
+//                .from("/auth/enroll")
+//                .on(RequestMethod.POST)
+//                .consumes(CUSTOM_MEDIA_TYPE)
+//                .produces(CUSTOM_MEDIA_TYPE)
+//                .to(RegisterEndpoint.class).register(param(AeroGearUser.class));
+
+
+
     }
 
 }
