@@ -88,6 +88,7 @@ public class AuthenticationService {
      * @return HTTP response and the session ID
      */
     public AeroGearUser register(AeroGearUser aeroGearUser) {
+        configuration.create(aeroGearUser);
         configuration.grant(DEFAULT_ROLE).to(aeroGearUser);
         authenticationManager.login(aeroGearUser);
         headers.fire(new ResponseHeaders(AUTH_TOKEN, token.get().toString()));
