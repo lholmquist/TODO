@@ -28,7 +28,7 @@ public class CustomMediaTypeResponder extends JsonResponder {
     
     @Override
     public void writeResponse(Object entity, RouteContext routeContext) throws Exception {
-        if (responseHeaders.getHeaders() != null) {
+        if (responseHeaders != null && responseHeaders.getHeaders() != null) {
             Set<Entry<String, String>> entrySet = responseHeaders.getHeaders().entrySet();
             for (Entry<String, String> entry : entrySet) {
                 routeContext.getResponse().setHeader(entry.getKey(), entry.getValue());
