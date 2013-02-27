@@ -76,7 +76,7 @@ public class AuthenticationService {
         String isLoggedIn = String.valueOf(authenticationManager.login(aeroGearUser));
         headers.fire(new ResponseHeaders(AUTH_TOKEN, token.get().toString()));
         Collection<String> roles = new ArrayList();
-        roles.add(aeroGearUser.getRole());
+        roles.add(DEFAULT_ROLE);
         return new HttpResponse(aeroGearUser.getUsername(), isLoggedIn, roles);
         //return Response.ok(credential).header(AUTH_TOKEN, token.get().toString()).build();
     }
