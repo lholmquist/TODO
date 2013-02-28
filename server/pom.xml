@@ -55,8 +55,8 @@ to work with JBoss EAP 6. It requires you have access to the JBoss EAP 6 maven r
         <javaee6.spec.version>3.0.0.Beta1-redhat-1</javaee6.spec.version>      -->
 
         <!-- Latest stable release of PicketLink -->
-        <aerogear.controller.version>1.0.0.CR1-27022013-SNAPSHOT</aerogear.controller.version>
-        <aerogear.security.version>1.0.0.CR1-27022013-SNAPSHOT</aerogear.security.version>
+        <aerogear.controller.version>1.0.0.CR1-28022013-SNAPSHOT</aerogear.controller.version>
+        <aerogear.security.version>1.0.0.CR1-28022013-SNAPSHOT</aerogear.security.version>
 
     </properties>
 
