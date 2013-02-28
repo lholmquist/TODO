@@ -77,7 +77,6 @@ public class AuthenticationService {
      */
     public HttpResponse login(final AeroGearUser aeroGearUser) {
         //This will be removed
-        String isLoggedIn = String.valueOf(authenticationManager.login(aeroGearUser));
         headers.fire(new ResponseHeaders(AUTH_TOKEN, token.get().toString()));
         return new HttpResponse(aeroGearUser.getUsername(), roles);
     }
