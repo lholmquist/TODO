@@ -29,8 +29,8 @@ import org.aerogear.todo.server.model.Task;
 @Stateless
 @TransactionAttribute
 public class TagEndpoint {
-    
-    @PersistenceContext
+
+    @PersistenceContext(unitName = "todo-default")
     private EntityManager em;
 
     public Tag create(Tag entity) {

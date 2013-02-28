@@ -14,21 +14,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.aerogear.todo.server.rest;
 
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+package org.aerogear.todo.server.util;
 
-/**
- * A class extending {@link Application} and annotated with @ApplicationPath is the Java EE 6
- * "no XML" approach to activating JAX-RS.
- * <p/>
- * <p>
- * Resources are served relative to the servlet path specified in the {@link ApplicationPath}
- * annotation.
- * </p>
- */
-@ApplicationPath("/")
-public class JaxRsActivator extends Application {
-    /* class body intentionally left blank */
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
+
+public class HttpResponse implements Serializable {
+
+
+    //TODO yep it's duplicated and must be refactored
+    private String username;
+    private Collection<String> roles;
+
+    public HttpResponse(String id, Collection<String> roles) {
+        this.username = id;
+        this.roles = roles;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Collection<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
 }

@@ -1,6 +1,6 @@
-/*
+/**
  * JBoss, Home of Professional Open Source
- * Copyright Red Hat Inc., and individual contributors
+ * Copyright Red Hat, Inc., and individual contributors
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -14,16 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.aerogear.todo.server.rest;
 
-package org.aerogear.todo.server.security.service;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.aerogear.todo.server.security.idm.AeroGearUser;
-
-public interface IDMHelper {
-
-    GrantMethods grant(String... roles);
-
-    public static interface GrantMethods {
-        void to(AeroGearUser user);
+public class ResponseHeaders {
+    
+    private Map<String, String> headers = new HashMap<String, String>();
+    
+    public ResponseHeaders(final String name, final String value) {
+        headers.put(name, value);
+    }
+    
+    public Map<String, String> getHeaders() {
+        return Collections.unmodifiableMap(headers);
     }
 }

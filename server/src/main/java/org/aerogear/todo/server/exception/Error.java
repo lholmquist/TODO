@@ -1,6 +1,6 @@
-/*
+/**
  * JBoss, Home of Professional Open Source
- * Copyright Red Hat Inc., and individual contributors
+ * Copyright Red Hat, Inc., and individual contributors
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -15,20 +15,11 @@
  * limitations under the License.
  */
 
-package org.aerogear.todo.server.security.service;
+package org.aerogear.todo.server.exception;
 
+public class Error {
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-
-@ApplicationScoped
-public class IDMHelperImpl implements IDMHelper {
-
-    @Inject
-    private GrantConfiguration grantConfiguration;
-
-    @Override
-    public GrantMethods grant(String... roles) {
-        return grantConfiguration.roles(roles);
+    public String index(HttpSecurityException exception) {
+        return "Not authorized" + exception;
     }
 }

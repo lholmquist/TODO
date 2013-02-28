@@ -17,20 +17,31 @@
 
 package org.aerogear.todo.server;
 
+import org.aerogear.todo.server.config.CustomMediaTypeResponder;
+import org.aerogear.todo.server.exception.Error;
+import org.aerogear.todo.server.exception.HttpSecurityException;
 import org.aerogear.todo.server.model.Project;
 import org.aerogear.todo.server.model.Tag;
 import org.aerogear.todo.server.model.Task;
+import org.aerogear.todo.server.rest.AuthenticationService;
 import org.aerogear.todo.server.rest.ProjectEndpoint;
 import org.aerogear.todo.server.rest.TagEndpoint;
 import org.aerogear.todo.server.rest.TaskEndpoint;
 import org.jboss.aerogear.controller.router.AbstractRoutingModule;
 import org.jboss.aerogear.controller.router.MediaType;
 import org.jboss.aerogear.controller.router.RequestMethod;
+import org.jboss.aerogear.security.model.AeroGearUser;
 
 public class Routes extends AbstractRoutingModule {
 
     @Override
     public void configuration() throws Exception {
+
+        route()
+                .on(HttpSecurityException.class)
+                .produces(JSON)
+                .to(Error.class).index(param(HttpSecurityException.class));
+
         route()
                 .from("/projects")
                 .roles("admin")
@@ -75,7 +86,7 @@ public class Routes extends AbstractRoutingModule {
                 .to(TaskEndpoint.class).create(param(Task.class));
         route()
                 .from("/tasks/{id}")
-                .roles("admin", "simple" )
+                .roles("admin", "simple")
                 .on(RequestMethod.DELETE)
                 .consumes(JSON)
                 .produces(MediaType.JSON)
@@ -136,7 +147,28 @@ public class Routes extends AbstractRoutingModule {
                 .consumes(JSON)
                 .produces(MediaType.JSON)
                 .to(TagEndpoint.class).update(param("id"), param(Tag.class));
-        }
+
+        route()
+                .from("/auth/login")
+                .on(RequestMethod.POST)
+                .consumes(JSON)
+                .produces(CustomMediaTypeResponder.CUSTOM_MEDIA_TYPE)
+                .to(AuthenticationService.class).login(param(AeroGearUser.class));
+        route()
+                .from("/auth/logout")
+                .on(RequestMethod.POST)
+                .consumes(JSON)
+                .produces(JSON)
+                .to(AuthenticationService.class).logout();
+        route()
+                .from("/auth/enroll")
+                .on(RequestMethod.POST)
+                .consumes(JSON)
+                .produces(CustomMediaTypeResponder.CUSTOM_MEDIA_TYPE)
+                .to(AuthenticationService.class).register(param(AeroGearUser.class));
+
+    }
+
 }
     
     

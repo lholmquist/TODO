@@ -36,9 +36,8 @@ import java.util.logging.Logger;
  */
 public class Resources {
     // use @SuppressWarnings to tell IDE to ignore warnings about field not being referenced directly
-    @SuppressWarnings("unused")
     @Produces
-    @PersistenceContext
+    @PersistenceContext(unitName = "todo-default")
     private EntityManager em;
 
     @Produces

@@ -28,8 +28,8 @@ import org.aerogear.todo.server.model.Task;
 @Stateless
 @TransactionAttribute
 public class TaskEndpoint {
-    
-    @PersistenceContext
+
+    @PersistenceContext(unitName = "todo-default")
     private EntityManager em;
 
     public Task create(Task entity) {
