@@ -18,6 +18,7 @@
 package org.aerogear.todo.server.rest;
 
 import java.util.Arrays;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -28,6 +29,7 @@ import javax.inject.Inject;
 import org.aerogear.todo.server.util.HttpResponse;
 import org.jboss.aerogear.security.auth.AuthenticationManager;
 import org.jboss.aerogear.security.auth.LoggedUser;
+import org.jboss.aerogear.security.auth.Roles;
 import org.jboss.aerogear.security.auth.Secret;
 import org.jboss.aerogear.security.auth.Token;
 import org.jboss.aerogear.security.authz.IdentityManagement;
@@ -60,6 +62,10 @@ public class AuthenticationService {
     @Inject
     @LoggedUser
     private Instance<String> loggedUser;
+
+    @Inject
+    @Roles
+    private List<String> roles;
 
     @Inject
     Event<ResponseHeaders> headers;
@@ -100,7 +106,7 @@ public class AuthenticationService {
     }
     
     private HttpResponse createResponse(AeroGearUser aeroGearUser) {
-        return new HttpResponse(aeroGearUser.getUsername(), Arrays.asList(aeroGearUser.getRole()));
+        return new HttpResponse(aeroGearUser.getUsername(), roles);
     }
 
     /**
