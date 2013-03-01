@@ -17,23 +17,20 @@
 
 package org.aerogear.todo.server.rest;
 
-import java.util.Arrays;
-import java.util.List;
+import org.aerogear.todo.server.util.HttpResponse;
+import org.jboss.aerogear.security.auth.AuthenticationManager;
+import org.jboss.aerogear.security.auth.Roles;
+import org.jboss.aerogear.security.auth.Secret;
+import org.jboss.aerogear.security.auth.Token;
+import org.jboss.aerogear.security.authz.IdentityManagement;
+import org.jboss.aerogear.security.model.AeroGearUser;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.enterprise.event.Event;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-
-import org.aerogear.todo.server.util.HttpResponse;
-import org.jboss.aerogear.security.auth.AuthenticationManager;
-import org.jboss.aerogear.security.auth.LoggedUser;
-import org.jboss.aerogear.security.auth.Roles;
-import org.jboss.aerogear.security.auth.Secret;
-import org.jboss.aerogear.security.auth.Token;
-import org.jboss.aerogear.security.authz.IdentityManagement;
-import org.jboss.aerogear.security.model.AeroGearUser;
+import java.util.List;
 
 /**
  * Default authentication endpoint implementation
@@ -60,10 +57,6 @@ public class AuthenticationService {
     private Instance<String> token;
 
     @Inject
-    @LoggedUser
-    private Instance<String> loggedUser;
-
-    @Inject
     @Roles
     private Instance<List<String>> roles;
 
@@ -82,11 +75,11 @@ public class AuthenticationService {
         fireResponseHeaderEvent();
         return createResponse(aeroGearUser);
     }
-    
+
     private void performLogin(AeroGearUser aeroGearUser) {
         authenticationManager.login(aeroGearUser);
     }
-    
+
     private void fireResponseHeaderEvent() {
         headers.fire(new ResponseHeaders(AUTH_TOKEN, token.get().toString()));
     }
@@ -104,7 +97,7 @@ public class AuthenticationService {
         fireResponseHeaderEvent();
         return createResponse(aeroGearUser);
     }
-    
+
     private HttpResponse createResponse(AeroGearUser aeroGearUser) {
         return new HttpResponse(aeroGearUser.getUsername(), roles.get());
     }
