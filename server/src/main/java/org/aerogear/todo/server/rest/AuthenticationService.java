@@ -65,7 +65,7 @@ public class AuthenticationService {
 
     @Inject
     @Roles
-    private List<String> roles;
+    private Instance<List<String>> roles;
 
     @Inject
     Event<ResponseHeaders> headers;
@@ -106,7 +106,7 @@ public class AuthenticationService {
     }
     
     private HttpResponse createResponse(AeroGearUser aeroGearUser) {
-        return new HttpResponse(aeroGearUser.getUsername(), roles);
+        return new HttpResponse(aeroGearUser.getUsername(), roles.get());
     }
 
     /**
