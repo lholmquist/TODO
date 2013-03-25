@@ -16,6 +16,8 @@
  */
 package org.aerogear.todo.server.util;
 
+import org.picketlink.annotations.PicketLink;
+
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.persistence.EntityManager;
@@ -39,6 +41,12 @@ public class Resources {
     @Produces
     @PersistenceContext(unitName = "todo-default")
     private EntityManager em;
+
+    @SuppressWarnings("unused")
+    @Produces
+    @PicketLink
+    @PersistenceContext(unitName = "picketlink-default")
+    private EntityManager picketLinkEntityManager;
 
     @Produces
     public Logger produceLog(InjectionPoint injectionPoint) {
