@@ -41,6 +41,11 @@ public class Routes extends AbstractRoutingModule {
                 .on(HttpSecurityException.class)
                 .produces(JSON)
                 .to(Error.class).index(param(HttpSecurityException.class));
+        
+        route()
+                .on(Throwable.class)
+                .produces(JSON)
+                .to(Error.class).exception(param(Throwable.class));
 
         route()
                 .from("/projects")
