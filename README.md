@@ -88,6 +88,18 @@ This application aims to show role authorization control based on PicketBox and 
 * CRUD (*Create, read, update and delete*) Tasks
 * R (*Read*)  Projects and Tags
 
+Using cUrl
+------------------
+
+#### Login
+
+    curl -v -b cookies.txt -c cookies.txt -H "Accept: application/json"     -H "Content-type: application/json" -X POST http://todo-aerogear.rhcloud.com/todo-server/auth/login -d '{"username":"john","password":"123"}'
+
+
+#### Accessing a protected resource
+
+    curl -v -b cookies.txt -c cookies.txt -H "Accept: application/json" -H "Content-type: application/json" --header "Auth-Token: 6b122165-f17e-48c6-96cd-4aa574adcae0" -X GET http://todo-aerogear.rhcloud.com/todo-server/tasks
+
 
 Notes
 ------
