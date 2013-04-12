@@ -37,7 +37,7 @@ public class TagCustomSerializer extends JsonSerializer<Tag> {
     public void serialize(Tag tag, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
         jsonGenerator.writeStartObject();
         jsonGenerator.writeFieldName("id");
-        jsonGenerator.writeNumber(tag.getId());
+        jsonGenerator.writeString(String.valueOf(tag.getId()));
         jsonGenerator.writeFieldName("title");
         jsonGenerator.writeString(tag.getTitle());
         jsonGenerator.writeFieldName("style");

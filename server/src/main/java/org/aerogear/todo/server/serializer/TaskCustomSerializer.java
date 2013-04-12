@@ -39,7 +39,7 @@ public class TaskCustomSerializer extends JsonSerializer<Task> {
     public void serialize(Task task, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
         jsonGenerator.writeStartObject();
         jsonGenerator.writeFieldName("id");
-        jsonGenerator.writeNumber(task.getId());
+        jsonGenerator.writeString(String.valueOf(task.getId()));
         jsonGenerator.writeFieldName("title");
         jsonGenerator.writeString(task.getTitle());
         jsonGenerator.writeFieldName("description");

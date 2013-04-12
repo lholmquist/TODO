@@ -60,6 +60,10 @@ public class Tag implements Serializable {
         this.id = id;
     }
 
+    public Tag(String id) {
+         this.id = Long.parseLong(id);
+    }
+
     public Long getId() {
         return this.id;
     }
