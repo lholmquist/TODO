@@ -5,6 +5,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -45,6 +47,7 @@ public class TaskTest {
     final String jackson = om.writeValueAsString(new Task(200L));
 
     // then
-    assertEquals("{\"id\":\"200\",\"title\":null,\"description\":null,\"date\":\"2013-04-12\",\"tags\":[]}", jackson);
+    String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+    assertEquals("{\"id\":\"200\",\"title\":null,\"description\":null,\"date\":\"" + date + "\",\"tags\":[]}", jackson);
   }
 }
