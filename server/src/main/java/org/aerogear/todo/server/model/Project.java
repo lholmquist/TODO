@@ -60,6 +60,10 @@ public class Project implements Serializable {
         this.id = id;
     }
 
+    public Project(String id) {
+        this.id = Long.parseLong(id);
+    }
+
     public Project(String title, String style, Set<Task> tasks) {
         this.title = title;
         this.style = style;

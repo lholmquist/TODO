@@ -37,7 +37,7 @@ public class ProjectCustomSerializer extends JsonSerializer<Project> {
     public void serialize(Project project, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
         jsonGenerator.writeStartObject();
         jsonGenerator.writeFieldName("id");
-        jsonGenerator.writeNumber(project.getId());
+        jsonGenerator.writeString(String.valueOf(project.getId()));
         jsonGenerator.writeFieldName("title");
         jsonGenerator.writeString(project.getTitle());
         jsonGenerator.writeFieldName("style");
