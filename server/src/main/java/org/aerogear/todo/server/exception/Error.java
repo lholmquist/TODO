@@ -17,9 +17,18 @@
 
 package org.aerogear.todo.server.exception;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.jboss.aerogear.controller.router.error.ErrorResponse;
+import org.jboss.aerogear.controller.router.error.JsonErrorResponse;
+
 public class Error {
 
     public String index(HttpSecurityException exception) {
         return "Not authorized" + exception;
+    }
+    
+    public ErrorResponse exception(Throwable t) {
+        return new JsonErrorResponse(HttpServletResponse.SC_BAD_REQUEST).message("error", t.getMessage());
     }
 }
