@@ -21,7 +21,6 @@ $( function() {
     var restAuth = AeroGear.Auth({
         name: "auth",
         settings: {
-            agAuth: true,
             baseURL: "/todo-server/",
             endpoints: {
                 enroll: "auth/enroll"
@@ -83,13 +82,13 @@ $( function() {
     // Event Bindings
     $( ".add-project, .add-tag, .add-task" ).on( "click", function( event ) {
         var isAdmin = sessionStorage.getItem( "access" ) === "1" ? true : false;
-        if ( restAuth.isAuthenticated() && ( isAdmin || $( this ).is( ".add-task" ) ) ) {
+        if ( isAdmin || $( this ).is( ".add-task" ) ) {
             var target = $( event.currentTarget );
 
             target.parent().height( "100%" );
             target.slideUp( "slow" );
             target.next().slideDown( "slow" );
-        } else if ( restAuth.isAuthenticated() && !isAdmin ) {
+        } else if ( !isAdmin ) {
             $( "#auth-error-box" ).modal();
         } else {
             loadAllData();
@@ -249,6 +248,8 @@ $( function() {
                     sessionStorage.removeItem( "access" );
 
                     restAuth.login( data, {
+                        contentType: "application/json",
+                        dataType: "json",
                         success: function( data ) {
                             var role = $.inArray( "admin", data.roles ) >= 0 ? 1 : 0;
                             sessionStorage.setItem( "username", data.username );
@@ -268,6 +269,8 @@ $( function() {
                     sessionStorage.removeItem( "access" );
 
                     restAuth.enroll( data, {
+                        contentType: "application/json",
+                        dataType: "json",
                         success: function( data ) {
                             var role = $.inArray( "admin", data.roles ) >= 0 ? 1 : 0;
                             sessionStorage.setItem( "username", data.username );
@@ -575,7 +578,6 @@ $( function() {
             $( "#userinfo-msg" ).show();
         })
         .fail( function() {
-            restAuth.deauthorize();
             $( "#login-box" ).modal({
                 backdrop: "static",
                 keyboard: false
